@@ -1,0 +1,25 @@
+{
+  "name": "icloudbridge.app-web",
+  "version": "1.0.0",
+  "description": "Website for iCloudBridge - a utility which syncs Apple Notes, Reminders, Passwords &amp; Photos to other services",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keithvassallomt/icloudbridge.app.git"
+  },
+  "keywords": [],
+  "author": "Keith Vassallo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/keithvassallomt/icloudbridge.app/issues"
+  },
+  "homepage": "https://github.com/keithvassallomt/icloudbridge.app#readme",
+  "devDependencies": {
+    "vite": "^7.2.2"
+  }
+}
