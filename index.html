@@ -2,22 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Export your Apple Reminders, Notes, Photos & Passwords to NextCloud (or anywhere else!) - and keep them in sync!">
   <title>iCloudBridge - Sync Your Apple Data</title>
   <link rel="stylesheet" href="/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
   <!-- Theme Toggle Button -->
   <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-    <span class="theme-icon"></span>
+    <i data-lucide="sun" class="theme-icon theme-icon-light"></i>
+    <i data-lucide="moon" class="theme-icon theme-icon-dark"></i>
+    <i data-lucide="monitor" class="theme-icon theme-icon-system"></i>
   </button>
 
   <!-- Hero Section -->
   <header class="hero">
     <canvas id="hero-canvas" class="hero-canvas"></canvas>
     <div class="container">
-      <img src="/assets/icloudbridge.png" alt="iCloudBridge Logo" class="logo">
+      <img src="/assets/iCloudBridge_transparent.svg" alt="iCloudBridge Logo" class="logo">
       <h1 class="hero-title">iCloudBridge</h1>
       <p class="hero-tagline">A small window into Apple's walled garden. Keep your Notes, Reminders, Photos and Passwords in sync with the
             tools you actually use.</p>
@@ -50,7 +53,7 @@
           <p>Sync Apple Notes, with support for folders, attachments, images, text formatting and even partial checklists!</p>
         </div>
         <div class="feature-image">
-          <div class="placeholder-image">Notes Screenshot</div>
+          <video src="/assets/notes.mp4" autoplay muted playsinline loop aria-label="Notes sync demo"></video>
         </div>
       </section>
 
@@ -61,7 +64,7 @@
           <p>Sync Apple Reminders, with support for alarms, recurring reminders, time zones and multiple reminder lists.</p>
         </div>
         <div class="feature-image">
-          <div class="placeholder-image">Reminders Screenshot</div>
+          <video src="/assets/reminders.mp4" autoplay muted playsinline loop aria-label="Reminders sync demo"></video>
         </div>
       </section>
 
@@ -72,7 +75,7 @@
           <p>Sync your Apple Passwords with Bitwarden, Vaultwarden or Nextcloud Passwords.</p>
         </div>
         <div class="feature-image">
-          <div class="placeholder-image">Passwords Screenshot</div>
+          <video src="/assets/passwords.mp4" autoplay muted playsinline loop aria-label="Passwords sync demo"></video>
         </div>
       </section>
 
@@ -83,7 +86,7 @@
           <p>Sync photos from non-Apple devices to your Apple Photos library.</p>
         </div>
         <div class="feature-image">
-          <div class="placeholder-image">Photos Screenshot</div>
+          <video src="/assets/photos.mp4" autoplay muted playsinline loop aria-label="Photos sync demo"></video>
         </div>
       </section>
 
@@ -95,7 +98,7 @@
           <p><strong>Logs:</strong> Keep a close eye on everything iCloudBridge is doing, in real time.</p>
         </div>
         <div class="feature-image">
-          <div class="placeholder-image">Schedules & Logs Screenshot</div>
+          <video src="/assets/logs.mp4" autoplay muted playsinline loop aria-label="Schedules and logs demo"></video>
         </div>
       </section>
     </div>
@@ -113,7 +116,7 @@
           <ul>
             <li><a href="#">Download</a></li>
             <li><a href="https://github.com/keithvassallomt/icloudbridge" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-            <li><a href="https://github.com/keithvassallomt/icloudbridge/blob/main/docs/user.md" target="_blank" rel="noopener noreferrer">Documentation</a></li>
+            <li><a href="https://docs.icloudbridge.app" target="_blank" rel="noopener noreferrer">Documentation</a></li>
           </ul>
         </div>
         <div class="footer-section">

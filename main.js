@@ -2,41 +2,60 @@
 import { initBackgroundAnimation } from './background-animation.js';
 
 // Theme Management
-const THEME_KEY = 'icloudbridge-theme';
+const THEME_KEY = 'icloudbridge-theme-preference';
 
-// Get the user's preferred theme
-function getPreferredTheme() {
-  // Check localStorage first
-  const savedTheme = localStorage.getItem(THEME_KEY);
-  if (savedTheme) {
-    return savedTheme;
-  }
-
-  // Fall back to system preference
+// Get system preference
+function getSystemTheme() {
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     return 'dark';
   }
-
   return 'light';
 }
 
-// Apply theme to the document
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem(THEME_KEY, theme);
+// Get the user's preferred theme setting (light, dark, or system)
+function getThemePreference() {
+  const saved = localStorage.getItem(THEME_KEY);
+  // Default to system if nothing saved
+  return saved || 'system';
 }
 
-// Toggle between light and dark themes
+// Apply theme to the document
+function applyTheme(preference) {
+  // Store preference
+  localStorage.setItem(THEME_KEY, preference);
+  document.documentElement.setAttribute('data-theme-preference', preference);
+
+  // Apply actual theme
+  let actualTheme;
+  if (preference === 'system') {
+    actualTheme = getSystemTheme();
+  } else {
+    actualTheme = preference;
+  }
+
+  document.documentElement.setAttribute('data-theme', actualTheme);
+}
+
+// Toggle through theme options: system -> light -> dark -> system
 function toggleTheme() {
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  applyTheme(newTheme);
+  const currentPreference = getThemePreference();
+  let newPreference;
+
+  if (currentPreference === 'system') {
+    newPreference = 'light';
+  } else if (currentPreference === 'light') {
+    newPreference = 'dark';
+  } else {
+    newPreference = 'system';
+  }
+
+  applyTheme(newPreference);
 }
 
 // Initialize theme on page load
 function initTheme() {
-  const theme = getPreferredTheme();
-  applyTheme(theme);
+  const preference = getThemePreference();
+  applyTheme(preference);
 
   // Add theme toggle event listener
   const themeToggle = document.getElementById('theme-toggle');
@@ -47,11 +66,16 @@ function initTheme() {
   // Listen for system theme changes
   if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      // Only auto-switch if user hasn't manually set a preference
-      if (!localStorage.getItem(THEME_KEY)) {
-        applyTheme(e.matches ? 'dark' : 'light');
+      // Only apply if user is using system preference
+      if (getThemePreference() === 'system') {
+        applyTheme('system');
       }
     });
+  }
+
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
   }
 }
 
@@ -74,6 +98,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   updateCopyrightYear();
   initBackgroundAnimation();
+
+  // Initialize Lucide icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 });
 
 // Also initialize immediately (for faster theme application)

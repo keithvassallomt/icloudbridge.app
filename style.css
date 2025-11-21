@@ -1,31 +1,31 @@
 /* Root Variables - Light Theme */
 :root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f7;
-  --bg-tertiary: #e8e8ed;
-  --text-primary: #1d1d1f;
-  --text-secondary: #6e6e73;
-  --accent-primary: #7c5cee;
-  --accent-hover: #6847d4;
-  --border-color: #d2d2d7;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+  --bg-primary: #EBF5EF;
+  --bg-secondary: #F8FDF9;
+  --bg-tertiary: #D9EDE1;
+  --text-primary: #05170A;
+  --text-secondary: #2d5542;
+  --accent-primary: #05C73B;
+  --accent-hover: #048A31;
+  --border-color: #C5DDCE;
+  --shadow-sm: 0 2px 8px rgba(5, 118, 106, 0.08);
+  --shadow-md: 0 4px 16px rgba(5, 118, 106, 0.12);
+  --shadow-lg: 0 8px 32px rgba(5, 118, 106, 0.16);
 }
 
 /* Dark Theme */
 [data-theme="dark"] {
-  --bg-primary: #1a1a1f;
-  --bg-secondary: #25252a;
-  --bg-tertiary: #2f2f35;
+  --bg-primary: #05170A;
+  --bg-secondary: #1F3123;
+  --bg-tertiary: #2d453a;
   --text-primary: #f5f5f7;
-  --text-secondary: #a1a1a6;
-  --accent-primary: #8b6fff;
-  --accent-hover: #a085ff;
-  --border-color: #3a3a40;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --text-secondary: #a8b5b0;
+  --accent-primary: #06EA46;
+  --accent-hover: #05C73B;
+  --border-color: #2d453a;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
 /* Base Styles */
@@ -78,13 +78,24 @@ body {
   background-color: var(--bg-tertiary);
 }
 
-.theme-icon::before {
-  content: '☀️';
-  font-size: 1.25rem;
+.theme-icon {
+  display: none;
+  width: 20px;
+  height: 20px;
+  color: var(--text-primary);
 }
 
-[data-theme="dark"] .theme-icon::before {
-  content: '🌙';
+/* Show appropriate icon based on theme preference */
+[data-theme-preference="light"] .theme-icon-light {
+  display: block;
+}
+
+[data-theme-preference="dark"] .theme-icon-dark {
+  display: block;
+}
+
+[data-theme-preference="system"] .theme-icon-system {
+  display: block;
 }
 
 /* Hero Section */
@@ -152,7 +163,7 @@ body {
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  line-height: 1.5;
+  line-height: 1.1;
 }
 
 .hero-cta {
@@ -186,6 +197,10 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
+[data-theme="dark"] .btn-primary {
+  color: #000000;
+}
+
 .btn-primary:hover {
   background-color: var(--accent-hover);
   transform: translateY(-2px);
@@ -212,9 +227,9 @@ body {
 }
 
 .feature {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
   align-items: center;
   margin-bottom: 8rem;
   padding: 3rem;
@@ -234,11 +249,12 @@ body {
 }
 
 .feature-reverse {
-  direction: rtl;
+  flex-direction: column;
 }
 
-.feature-reverse > * {
-  direction: ltr;
+.feature-content {
+  text-align: center;
+  max-width: 800px;
 }
 
 .feature-content h2 {
@@ -261,20 +277,33 @@ body {
 
 .feature-image {
   width: 100%;
+  max-width: 1000px;
 }
 
 .placeholder-image {
   width: 100%;
   aspect-ratio: 16/9;
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-hover) 100%);
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  min-height: 400px;
+}
+
+/* Video support for feature sections */
+.feature-image video {
+  width: 100%;
+  aspect-ratio: 16/9;
+  height: auto;
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-lg);
+  object-fit: cover;
+  display: block;
 }
 
 /* Footer */
@@ -334,6 +363,11 @@ body {
     height: 2.5rem;
   }
 
+  .theme-icon {
+    width: 18px;
+    height: 18px;
+  }
+
   .hero {
     min-height: auto;
     padding: 6rem 0 4rem;
@@ -359,14 +393,9 @@ body {
   }
 
   .feature {
-    grid-template-columns: 1fr;
     gap: 2rem;
     margin-bottom: 4rem;
     padding: 2rem;
-  }
-
-  .feature-reverse {
-    direction: ltr;
   }
 
   .feature-content h2 {
@@ -375,6 +404,14 @@ body {
 
   .feature-content p {
     font-size: 1rem;
+  }
+
+  .placeholder-image {
+    min-height: 250px;
+  }
+
+  .feature-image video {
+    min-height: 250px;
   }
 
   .footer-content {

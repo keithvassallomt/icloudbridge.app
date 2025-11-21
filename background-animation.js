@@ -32,12 +32,40 @@ const CONFIG = {
   jitterSpeed: 0.02,
 
   // Color channels (Notes, Reminders, Photos, Passwords)
-  channels: [
-    { name: 'Notes', color: '#FFD60A', glow: '#FFD60A88' }, // Soft yellow
-    { name: 'Reminders', color: '#00C7BE', glow: '#00C7BE88' }, // Cyan/blue
-    { name: 'Photos', color: '#BF5AF2', glow: '#BF5AF288' }, // Violet/pink
-    { name: 'Passwords', color: '#8B6FFF', glow: '#8B6FFF88' }, // Purple/light-violet
-  ]
+  channels: {
+    dark: [
+      { name: 'Notes', color: '#FFD60A', glow: '#FFD60A88' }, // Soft yellow
+      { name: 'Reminders', color: '#00C7BE', glow: '#00C7BE88' }, // Cyan/blue
+      { name: 'Photos', color: '#BF5AF2', glow: '#BF5AF288' }, // Violet/pink
+      { name: 'Passwords', color: '#8B6FFF', glow: '#8B6FFF88' }, // Purple/light-violet
+    ],
+    light: [
+      { name: 'Notes', color: '#D4A800', glow: '#D4A80066' }, // Darker yellow
+      { name: 'Reminders', color: '#0099CC', glow: '#0099CC66' }, // Darker cyan/blue
+      { name: 'Photos', color: '#9333EA', glow: '#9333EA66' }, // Darker violet
+      { name: 'Passwords', color: '#7C3AED', glow: '#7C3AED66' }, // Darker purple
+    ]
+  },
+
+  // Background gradients
+  backgroundGradient: {
+    dark: [
+      { stop: 0, color: '#05170A' },
+      { stop: 0.5, color: '#0D2415' },
+      { stop: 1, color: '#1F3123' }
+    ],
+    light: [
+      { stop: 0, color: '#EBF5EF' },
+      { stop: 0.5, color: '#D9EDE1' },
+      { stop: 1, color: '#E3F2E9' }
+    ]
+  },
+
+  // Node colors
+  nodeColors: {
+    dark: { core: 'rgba(255, 255, 255, 0.8)', glow: 'rgba(255, 255, 255, 0.3)' },
+    light: { core: 'rgba(100, 100, 120, 0.6)', glow: 'rgba(100, 100, 120, 0.2)' }
+  }
 };
 
 class BackgroundAnimation {
@@ -57,11 +85,18 @@ class BackgroundAnimation {
     this.mouse = { x: 0, y: 0, normalizedX: 0, normalizedY: 0 };
     this.isHoveringButton = false;
 
+    // Theme tracking
+    this.currentTheme = this.getTheme();
+
     // Animation frame
     this.animationFrame = null;
     this.time = 0;
 
     this.init();
+  }
+
+  getTheme() {
+    return document.documentElement.getAttribute('data-theme') || 'dark';
   }
 
   init() {
@@ -129,8 +164,9 @@ class BackgroundAnimation {
       const startNode = this.leftCluster[Math.floor(Math.random() * this.leftCluster.length)];
       const endNode = this.rightCluster[Math.floor(Math.random() * this.rightCluster.length)];
 
-      // Assign a channel color
-      const channel = CONFIG.channels[i % CONFIG.channels.length];
+      // Assign a channel color based on current theme
+      const channels = CONFIG.channels[this.currentTheme];
+      const channel = channels[i % channels.length];
 
       // Create control points for Bézier curve
       const midX = this.width / 2;
@@ -191,13 +227,30 @@ class BackgroundAnimation {
 
     // Resize
     window.addEventListener('resize', () => this.resize());
+
+    // Theme change detection
+    const observer = new MutationObserver(() => {
+      const newTheme = this.getTheme();
+      if (newTheme !== this.currentTheme) {
+        this.currentTheme = newTheme;
+        // Recreate arcs with new theme colors
+        this.createArcs();
+      }
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
   }
 
   drawGradientBackground() {
     const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
-    gradient.addColorStop(0, '#0A0E27');
-    gradient.addColorStop(0.5, '#1A1F3A');
-    gradient.addColorStop(1, '#0F0D1E');
+    const gradientStops = CONFIG.backgroundGradient[this.currentTheme];
+
+    gradientStops.forEach(stop => {
+      gradient.addColorStop(stop.stop, stop.color);
+    });
 
     this.ctx.fillStyle = gradient;
     this.ctx.fillRect(0, 0, this.width, this.height);
@@ -211,9 +264,10 @@ class BackgroundAnimation {
     const y = node.y + parallaxY;
 
     // Glow
+    const nodeColors = CONFIG.nodeColors[this.currentTheme];
     const glowGradient = this.ctx.createRadialGradient(x, y, 0, x, y, CONFIG.nodeGlowRadius);
-    glowGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
-    glowGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    glowGradient.addColorStop(0, nodeColors.glow);
+    glowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
     this.ctx.fillStyle = glowGradient;
     this.ctx.beginPath();
@@ -221,7 +275,7 @@ class BackgroundAnimation {
     this.ctx.fill();
 
     // Core
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    this.ctx.fillStyle = nodeColors.core;
     this.ctx.beginPath();
     this.ctx.arc(x, y, CONFIG.nodeRadius, 0, Math.PI * 2);
     this.ctx.fill();
