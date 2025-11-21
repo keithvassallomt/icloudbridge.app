@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/keithvassallomt/icloudbridge.app#readme",
   "devDependencies": {
-    "vite": "^7.2.2",
-    "vitepress": "^1.6.4"
+    "vite": "^7.2.4",
+    "vitepress": "^2.0.0-alpha.14"
   }
 }
