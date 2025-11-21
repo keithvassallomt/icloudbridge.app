@@ -1,6 +1,18 @@
 # icloudbridge.app
 Website for iCloudBridge - a utility which syncs Apple Notes, Reminders, Passwords &amp; Photos to other services
 
+## Build the Site for Static Hosting
+
+1. Install dependencies (once):
+   ```bash
+   npm install
+   ```
+2. Build the static site bundle:
+   ```bash
+   npm run build
+   ```
+3. Deploy the contents of `dist/` to your static host (e.g., Netlify, Cloudflare Pages, S3/CloudFront). This folder contains everything needed to serve the landing page and bundled assets.
+
 ## Documentation Setup
 
 This website includes an automatically generated documentation site using VitePress.
