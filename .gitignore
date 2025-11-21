@@ -1,4 +1,5 @@
 inst.md
 node_modules
 dist-ssr
+dist
 *.local
