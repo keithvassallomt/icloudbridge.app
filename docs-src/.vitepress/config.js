@@ -3,7 +3,8 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'iCloudBridge',
   description: 'User Guide for iCloudBridge - Sync Your Apple Data',
-  base: '/docs/',
+  // Use root-relative URLs; CloudFront function rewrites to /docs behind the scenes
+  base: '/',
   outDir: '../public/docs',
   ignoreDeadLinks: true,
 
