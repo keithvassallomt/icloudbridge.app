@@ -10,6 +10,18 @@ phases:
     commands:
       - npm run build
       - npm run docs:build
+  post_build:
+    commands:
+      - |
+        : "${DEPLOY_BUCKET:?Set DEPLOY_BUCKET to the target S3 bucket}"
+        aws s3 sync dist/ "s3://${DEPLOY_BUCKET}/" \
+          --cache-control "public, max-age=31536000, immutable" \
+          --exclude "*.html"
+        aws s3 cp dist/ "s3://${DEPLOY_BUCKET}/" \
+          --recursive \
+          --exclude "*" \
+          --include "*.html" \
+          --cache-control "no-cache, must-revalidate"
 
 artifacts:
   files:
