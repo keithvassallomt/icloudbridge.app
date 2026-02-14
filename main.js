@@ -93,11 +93,31 @@ function updateCopyrightYear() {
   }
 }
 
+// Fetch latest release version from GitHub
+function fetchLatestVersion() {
+  const badge = document.getElementById('version-badge');
+  const tag = document.getElementById('version-tag');
+  if (!badge || !tag) return;
+
+  fetch('https://api.github.com/repos/keithvassallomt/icloudbridge/releases/latest')
+    .then(res => res.json())
+    .then(data => {
+      if (data.tag_name) {
+        tag.textContent = data.tag_name;
+        badge.style.display = '';
+      }
+    })
+    .catch(() => {
+      // Silently fail - badge stays hidden
+    });
+}
+
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   updateCopyrightYear();
   initBackgroundAnimation();
+  fetchLatestVersion();
 
   // Initialize Lucide icons
   if (typeof lucide !== 'undefined') {
