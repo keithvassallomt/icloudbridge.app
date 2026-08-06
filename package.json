@@ -1,6 +1,6 @@
 {
   "name": "icloudbridge.app-web",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Website for iCloudBridge - a utility which syncs Apple Notes, Reminders, Passwords &amp; Photos to other services",
   "type": "module",
   "scripts": {
